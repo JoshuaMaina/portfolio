@@ -4,15 +4,16 @@ Personal site for Joshua Mwangi Maina, deployed on Vercel from `main`.
 
 ## The idea
 
-The career reads as a book. Each project or milestone is a full-height page, in date order from 2015 to
-today, and each page lands into place as you scroll to it. A timeline bar is fixed to the bottom of the
+The career reads as a book. Each project or milestone is a full-height page, newest first, from today back to
+2015, and each page lands into place as you scroll to it. A timeline bar is fixed to the bottom of the
 screen. It shows which year you're reading, fills up to that year, and lets you jump to any year.
 The opening page makes claims with small numbers beside them, and each number links to the page behind
 the claim.
 
 ## Editing
 
-1. Edit `build/pages.py`. Years and pages live in one list in date order. The timeline, page numbers
+1. Edit `build/pages.py`. Years are listed oldest first, and the build shows them newest first. Within a year, pages
+   show in the order written. The timeline, page numbers
    and year sections are all generated from it.
 2. Run `python3 build/build.py` to regenerate `index.html`.
 3. Commit and push. Vercel deploys `main` automatically.

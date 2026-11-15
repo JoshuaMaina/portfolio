@@ -1,4 +1,5 @@
-"""Every page of the site, in date order. Edit here, then run: python3 build/build.py"""
+"""Every page of the site. Years are listed oldest first here; the build shows them newest first.
+Within a year, pages show in the order written below. Edit here, then run: python3 build/build.py"""
 
 # Years shown on the timeline. Each one is a <section> holding that year's pages.
 YEARS = [
@@ -35,6 +36,15 @@ YEARS = [
         "year": 2019,
         "pages": [
             {
+                "id": "ibm",
+                "where": "IBM student start-up programme, data analyst",
+                "title": "A start-up inside a programme",
+                "metric": "Team of students",
+                "body": "IBM gave a small team of university students the chance to run a start-up. I was the "
+                        "data analyst, working mostly in R and Watson Studio.",
+                "stack": "R, IBM Watson Studio",
+            },
+            {
                 "id": "liberty",
                 "where": "Liberty Life Kenya, actuarial intern",
                 "title": "Quotation tools and audit trails",
@@ -45,29 +55,11 @@ YEARS = [
                         "unit-linked products.",
                 "stack": "R, Shiny, Excel, VBA, Basys",
             },
-            {
-                "id": "ibm",
-                "where": "IBM student start-up programme, data analyst",
-                "title": "A start-up inside a programme",
-                "metric": "Team of students",
-                "body": "IBM gave a small team of university students the chance to run a start-up. I was the "
-                        "data analyst, working mostly in R and Watson Studio.",
-                "stack": "R, IBM Watson Studio",
-            },
         ],
     },
     {
         "year": 2020,
         "pages": [
-            {
-                "id": "summer-analyst",
-                "where": "Goldman Sachs, summer analyst",
-                "title": "Back-testing pricing models",
-                "metric": "5 weeks, remote",
-                "body": "A visualisation tool that compared new pricing models with the ones they would replace, "
-                        "highlighting where their estimates differed across historical data.",
-                "stack": "Highcharts, data analysis",
-            },
             {
                 "id": "nairobi",
                 "where": "University of Nairobi",
@@ -77,6 +69,15 @@ YEARS = [
                         "Passed the Institute and Faculty of Actuaries papers CM1, CS1 and CB1, and was "
                         "vice-chair of the Nairobi Actuarial Students’ Association.",
                 "stack": "Probability, statistics, quantitative modelling",
+            },
+            {
+                "id": "summer-analyst",
+                "where": "Goldman Sachs, summer analyst",
+                "title": "Back-testing pricing models",
+                "metric": "5 weeks, remote",
+                "body": "A visualisation tool that compared new pricing models with the ones they would replace, "
+                        "highlighting where their estimates differed across historical data.",
+                "stack": "Highcharts, data analysis",
             },
         ],
     },

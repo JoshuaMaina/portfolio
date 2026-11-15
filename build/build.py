@@ -5,9 +5,12 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE))
-from pages import YEARS
+from pages import YEARS as YEARS_OLDEST_FIRST
 
-FIRST, LAST = YEARS[0]["year"], YEARS[-1]["year"]
+# Newest first: readers care most about recent work
+YEARS = list(reversed(YEARS_OLDEST_FIRST))
+
+FIRST, LAST = YEARS[-1]["year"], YEARS[0]["year"]  # oldest, newest
 SPAN = LAST - FIRST
 N = len(YEARS)
 
@@ -22,7 +25,7 @@ css = (HERE / "styles.css").read_text()
 # The fill grows to whichever year is current (one rule per year)
 fill_rules = "\n".join(
     f".timeline:has(li:nth-child({i}) a:is(:target-current, .target-current)) .fill "
-    f"{{ inline-size: {((y['year'] - FIRST) / SPAN) * 100:.2f}%; }}"
+    f"{{ inline-size: {((LAST - y['year']) / SPAN) * 100:.2f}%; }}"
     for i, y in enumerate(YEARS, 1)
 )
 fill_rules += "\n@media (width < 40em) {\n" + "\n".join(
@@ -56,7 +59,7 @@ for y in YEARS:
     </section>""")
 
 timeline_items = "\n".join(
-    f'        <li style="--t: {(y["year"] - FIRST) / SPAN:.4f}; --i: {i}; --n: {N - 1}">'
+    f'        <li style="--t: {(LAST - y["year"]) / SPAN:.4f}; --i: {i}; --n: {N - 1}">'
     f'<a href="#y{y["year"]}"><span class="full">{y["year"]}</span>'
     f'<span class="short" aria-hidden="true">’{str(y["year"])[2:]}</span></a></li>'
     for i, y in enumerate(YEARS)
@@ -101,7 +104,7 @@ page = f"""<!doctype html>
     <a class="name" href="/">Joshua Mwangi Maina</a>
     <nav aria-label="Primary">
       <ul>
-        <li><a href="#y{FIRST}">The story</a></li>
+        <li><a href="#y{LAST}">The story</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -122,7 +125,7 @@ page = f"""<!doctype html>
         <p class="sub">
           Vice President and software engineer in London, working in Java and Python. I trained as an
           actuary, so I still think in failure modes and evidence. Each small number links to the page
-          behind the claim. Scroll to read the story from {FIRST}, or jump to a year on the timeline.
+          behind the claim. Scroll to read it from {LAST} back to {FIRST}, or jump to a year on the timeline.
         </p>
         <span class="folio" aria-hidden="true">1 / {total}</span>
       </div>

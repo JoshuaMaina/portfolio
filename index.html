@@ -435,11 +435,11 @@ a {
 
 /* Timeline fill, one rule per year */
 .timeline:has(li:nth-child(1) a:is(:target-current, .target-current)) .fill { inline-size: 0.00%; }
-.timeline:has(li:nth-child(2) a:is(:target-current, .target-current)) .fill { inline-size: 9.09%; }
-.timeline:has(li:nth-child(3) a:is(:target-current, .target-current)) .fill { inline-size: 36.36%; }
-.timeline:has(li:nth-child(4) a:is(:target-current, .target-current)) .fill { inline-size: 45.45%; }
-.timeline:has(li:nth-child(5) a:is(:target-current, .target-current)) .fill { inline-size: 54.55%; }
-.timeline:has(li:nth-child(6) a:is(:target-current, .target-current)) .fill { inline-size: 81.82%; }
+.timeline:has(li:nth-child(2) a:is(:target-current, .target-current)) .fill { inline-size: 18.18%; }
+.timeline:has(li:nth-child(3) a:is(:target-current, .target-current)) .fill { inline-size: 45.45%; }
+.timeline:has(li:nth-child(4) a:is(:target-current, .target-current)) .fill { inline-size: 54.55%; }
+.timeline:has(li:nth-child(5) a:is(:target-current, .target-current)) .fill { inline-size: 63.64%; }
+.timeline:has(li:nth-child(6) a:is(:target-current, .target-current)) .fill { inline-size: 90.91%; }
 .timeline:has(li:nth-child(7) a:is(:target-current, .target-current)) .fill { inline-size: 100.00%; }
 @media (width < 40em) {
   .timeline:has(li:nth-child(1) a:is(:target-current, .target-current)) .fill { inline-size: 0.00%; }
@@ -460,7 +460,7 @@ a {
     <a class="name" href="/">Joshua Mwangi Maina</a>
     <nav aria-label="Primary">
       <ul>
-        <li><a href="#y2015">The story</a></li>
+        <li><a href="#y2026">The story</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -481,122 +481,56 @@ a {
         <p class="sub">
           Vice President and software engineer in London, working in Java and Python. I trained as an
           actuary, so I still think in failure modes and evidence. Each small number links to the page
-          behind the claim. Scroll to read the story from 2015, or jump to a year on the timeline.
+          behind the claim. Scroll to read it from 2026 back to 2015, or jump to a year on the timeline.
         </p>
         <span class="folio" aria-hidden="true">1 / 20</span>
       </div>
     </section>
 
-    <section id="y2015" class="year-group" tabindex="-1" aria-labelledby="y2015-title">
-      <h2 id="y2015-title" class="visually-hidden">2015</h2>
-      <article id="starehe" class="page entry" aria-labelledby="starehe-title">
+    <section id="y2026" class="year-group" tabindex="-1" aria-labelledby="y2026-title">
+      <h2 id="y2026-title" class="visually-hidden">2026</h2>
+      <article id="agent-platform" class="page entry" aria-labelledby="agent-platform-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2015</span>
-          <p class="where">Starehe Boys’ Centre, Nairobi</p>
-          <h3 id="starehe-title">Kenya Certificate of Secondary Education</h3>
-          <span class="metric">Grade A</span>
-          <p class="body">Finished secondary school with an A. Along the way I led student groups including the Research Club, earned Silver and Bronze in the President’s Award scheme, and trained as a first aider with the St John Ambulance cadets.</p>
+          <span class="year" aria-hidden="true">2026</span>
+          <p class="where">Goldman Sachs, vice president</p>
+          <h3 id="agent-platform-title">Multi-tenant agent platform</h3>
+          <span class="metric">1 runtime per user</span>
+          <p class="body">An internal platform where each user gets an isolated agent runtime, and traders can ship their own apps with no configuration. It works by convention: one parameterised Dockerfile, the folder name as the app’s identity, per-app CI builds and automatic service discovery. I implemented the A2A protocol on top of our MCP-based orchestration, and rebuilt the task lifecycle as an explicit state machine backed by Redis.</p>
+            <p class="stack">Python, MCP, A2A, Docker, GitHub Actions, Traefik, Redis</p>
           <span class="folio" aria-hidden="true">2 / 20</span>
         </div>
       </article>
-    </section>
-    <section id="y2016" class="year-group" tabindex="-1" aria-labelledby="y2016-title">
-      <h2 id="y2016-title" class="visually-hidden">2016</h2>
-      <article id="archangel" class="page entry" aria-labelledby="archangel-title">
+      <article id="grounded-chat" class="page entry" aria-labelledby="grounded-chat-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2016</span>
-          <p class="where">Archangel Interactive, front-end intern</p>
-          <h3 id="archangel-title">Where programming started</h3>
-          <span class="metric">First job</span>
-          <p class="body">A summer building and testing websites. It was meant to be a side interest next to actuarial science, but it’s where I learnt I wanted to build things.</p>
-            <p class="stack">HTML, CSS, website testing</p>
+          <span class="year" aria-hidden="true">2026</span>
+          <p class="where">Goldman Sachs, vice president</p>
+          <h3 id="grounded-chat-title">Grounded trading chat</h3>
+          <span class="metric">0 invented figures</span>
+          <p class="body">A chat assistant inside a trading dashboard, where one invented number is a financial risk. Answers are grounded in tool output and cite their sources. The interface renders figures straight from tool results rather than from model text, and an eval suite checks that this keeps holding.</p>
+            <p class="stack">LLM tool use, Braintrust, Promptfoo</p>
           <span class="folio" aria-hidden="true">3 / 20</span>
         </div>
       </article>
-    </section>
-    <section id="y2019" class="year-group" tabindex="-1" aria-labelledby="y2019-title">
-      <h2 id="y2019-title" class="visually-hidden">2019</h2>
-      <article id="liberty" class="page entry" aria-labelledby="liberty-title">
+      <article id="bloomberg" class="page entry" aria-labelledby="bloomberg-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2019</span>
-          <p class="where">Liberty Life Kenya, actuarial intern</p>
-          <h3 id="liberty-title">Quotation tools and audit trails</h3>
-          <span class="metric">Excel to R</span>
-          <p class="body">I audited actuarial models and wrote their audit trails. With another intern I built a Group Life quotation tool, first in Excel and R Shiny, then automated it with macros. I also investigated annuity payments and unit fund values, and helped value unit-linked products.</p>
-            <p class="stack">R, Shiny, Excel, VBA, Basys</p>
+          <span class="year" aria-hidden="true">2026</span>
+          <p class="where">Goldman Sachs, vice president</p>
+          <h3 id="bloomberg-title">Bloomberg chat bots</h3>
+          <span class="metric">3 teams live</span>
+          <p class="body">I’m extending an internal Bloomberg API service so that teams can run interactive bots that listen and reply in chat rooms. Teams define a bot’s behaviour through a lightweight plug-in configuration. Three teams are already using it ahead of the production rollout.</p>
+            <p class="stack">Bloomberg APIs, Python</p>
           <span class="folio" aria-hidden="true">4 / 20</span>
         </div>
       </article>
-      <article id="ibm" class="page entry" aria-labelledby="ibm-title">
+      <article id="conditions" class="page entry" aria-labelledby="conditions-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2019</span>
-          <p class="where">IBM student start-up programme, data analyst</p>
-          <h3 id="ibm-title">A start-up inside a programme</h3>
-          <span class="metric">Team of students</span>
-          <p class="body">IBM gave a small team of university students the chance to run a start-up. I was the data analyst, working mostly in R and Watson Studio.</p>
-            <p class="stack">R, IBM Watson Studio</p>
+          <span class="year" aria-hidden="true">2026</span>
+          <p class="where">Goldman Sachs, vice president</p>
+          <h3 id="conditions-title">Conditions written by agents</h3>
+          <span class="metric">In progress</span>
+          <p class="body">Letting an agent turn a request like “tell me if this stays above X for three hours” into a strict, auditable contract over live data, which triggers actions when it passes. Simple checks run deterministically and only fuzzy ones go to a smaller model, so costs stay flat as conditions multiply.</p>
+            <p class="stack">System design</p>
           <span class="folio" aria-hidden="true">5 / 20</span>
-        </div>
-      </article>
-    </section>
-    <section id="y2020" class="year-group" tabindex="-1" aria-labelledby="y2020-title">
-      <h2 id="y2020-title" class="visually-hidden">2020</h2>
-      <article id="summer-analyst" class="page entry" aria-labelledby="summer-analyst-title">
-        <div class="sheet">
-          <span class="year" aria-hidden="true">2020</span>
-          <p class="where">Goldman Sachs, summer analyst</p>
-          <h3 id="summer-analyst-title">Back-testing pricing models</h3>
-          <span class="metric">5 weeks, remote</span>
-          <p class="body">A visualisation tool that compared new pricing models with the ones they would replace, highlighting where their estimates differed across historical data.</p>
-            <p class="stack">Highcharts, data analysis</p>
-          <span class="folio" aria-hidden="true">6 / 20</span>
-        </div>
-      </article>
-      <article id="nairobi" class="page entry" aria-labelledby="nairobi-title">
-        <div class="sheet">
-          <span class="year" aria-hidden="true">2020</span>
-          <p class="where">University of Nairobi</p>
-          <h3 id="nairobi-title">BSc Actuarial Science</h3>
-          <span class="metric">First class</span>
-          <p class="body">Graduated with first-class honours, as the best student in second and final year. Passed the Institute and Faculty of Actuaries papers CM1, CS1 and CB1, and was vice-chair of the Nairobi Actuarial Students’ Association.</p>
-            <p class="stack">Probability, statistics, quantitative modelling</p>
-          <span class="folio" aria-hidden="true">7 / 20</span>
-        </div>
-      </article>
-    </section>
-    <section id="y2021" class="year-group" tabindex="-1" aria-labelledby="y2021-title">
-      <h2 id="y2021-title" class="visually-hidden">2021</h2>
-      <article id="load-balancer" class="page entry" aria-labelledby="load-balancer-title">
-        <div class="sheet">
-          <span class="year" aria-hidden="true">2021</span>
-          <p class="where">Goldman Sachs, analyst</p>
-          <h3 id="load-balancer-title">Zero-downtime intra-day deployments</h3>
-          <span class="metric">0 downtime</span>
-          <p class="body">I built a custom Java load-balancing service for mission-critical pricing systems, from start to finish. It orchestrates rolling restarts automatically, so patches go out during the trading day without downtime, rather than waiting for a release window.</p>
-            <p class="stack">Java</p>
-          <span class="folio" aria-hidden="true">8 / 20</span>
-        </div>
-      </article>
-      <article id="grpc" class="page entry" aria-labelledby="grpc-title">
-        <div class="sheet">
-          <span class="year" aria-hidden="true">2021</span>
-          <p class="where">Goldman Sachs, analyst</p>
-          <h3 id="grpc-title">Standard gRPC tooling</h3>
-          <span class="metric">−10% latency</span>
-          <p class="body">Shared tooling to standardise gRPC and Protocol Buffers across services, in Java and Python: client scaffolding, authentication middleware and distributed tracing. It helped cut client-server latency by more than 10% across several microservices.</p>
-            <p class="stack">gRPC, Protocol Buffers, Java, Python</p>
-          <span class="folio" aria-hidden="true">9 / 20</span>
-        </div>
-      </article>
-      <article id="monitoring" class="page entry" aria-labelledby="monitoring-title">
-        <div class="sheet">
-          <span class="year" aria-hidden="true">2021</span>
-          <p class="where">Goldman Sachs, analyst</p>
-          <h3 id="monitoring-title">Monitoring the pricing flow</h3>
-          <span class="metric">Real-time</span>
-          <p class="body">I led the rollout of Prometheus monitoring across the core pricing flow, giving real-time visibility into latency and system health. I also extended our tracing, which cut support load and gave performance work real data to go on.</p>
-            <p class="stack">Prometheus, distributed tracing</p>
-          <span class="folio" aria-hidden="true">10 / 20</span>
         </div>
       </article>
     </section>
@@ -610,7 +544,7 @@ a {
           <span class="metric">10× faster</span>
           <p class="body">I led the design and rollout of a clustered Hazelcast cache for cross-asset pricing, and it made pricing more than ten times faster. It handles product-specific pricing rules for more than ten instrument types. Operators can switch it on or off at runtime from a dashboard, and continuous monitoring and end-to-end validation tests check every result.</p>
             <p class="stack">Java, Hazelcast</p>
-          <span class="folio" aria-hidden="true">11 / 20</span>
+          <span class="folio" aria-hidden="true">6 / 20</span>
         </div>
       </article>
       <article id="start-up" class="page entry" aria-labelledby="start-up-title">
@@ -621,7 +555,7 @@ a {
           <span class="metric">−90% start-up</span>
           <p class="body">A critical library used to be downloaded at runtime when each service started. I changed its release model so it is pre-deployed to application hosts, which cut start-up time by 90% across every service the team owns. Its releases now follow the same rollout standards as production.</p>
             <p class="stack">Release engineering</p>
-          <span class="folio" aria-hidden="true">12 / 20</span>
+          <span class="folio" aria-hidden="true">7 / 20</span>
         </div>
       </article>
       <article id="tracing" class="page entry" aria-labelledby="tracing-title">
@@ -632,7 +566,7 @@ a {
           <span class="metric">Zero rewrites</span>
           <p class="body">OpenTracing was archived, so I led the move off it. I designed an internal tracing abstraction and refactored our repositories to use it. We swapped the backend to OpenTelemetry without touching application code, and the next migration will be just as easy.</p>
             <p class="stack">OpenTelemetry, Java</p>
-          <span class="folio" aria-hidden="true">13 / 20</span>
+          <span class="folio" aria-hidden="true">8 / 20</span>
         </div>
       </article>
       <article id="dashboards" class="page entry" aria-labelledby="dashboards-title">
@@ -643,7 +577,7 @@ a {
           <span class="metric">5 teams moved</span>
           <p class="body">I helped move five teams from their own bespoke dashboards onto one shared internal platform, extending it to cover what each team needed. I built Python utilities that expose data sources dynamically, including Jupyter outputs, added per-user modals and alerts, and helped teams set up end-to-end UI tests.</p>
             <p class="stack">Python, Jupyter, UI testing</p>
-          <span class="folio" aria-hidden="true">14 / 20</span>
+          <span class="folio" aria-hidden="true">9 / 20</span>
         </div>
       </article>
       <article id="workers" class="page entry" aria-labelledby="workers-title">
@@ -654,7 +588,7 @@ a {
           <span class="metric">Many → one</span>
           <p class="body">I co-led the design and led the build of a scalable Python worker pool framework. It replaced several team-specific versions with one shared platform, which now runs internal and client-facing products.</p>
             <p class="stack">Python</p>
-          <span class="folio" aria-hidden="true">15 / 20</span>
+          <span class="folio" aria-hidden="true">10 / 20</span>
         </div>
       </article>
       <article id="scaling" class="page entry" aria-labelledby="scaling-title">
@@ -665,53 +599,119 @@ a {
           <span class="metric">Scales both ways</span>
           <p class="body">I helped build a configurable, multi-region auto-scaling framework for pricing systems. It adds capacity under heavy trading load and scales down when markets are quiet.</p>
             <p class="stack">Kubernetes</p>
+          <span class="folio" aria-hidden="true">11 / 20</span>
+        </div>
+      </article>
+    </section>
+    <section id="y2021" class="year-group" tabindex="-1" aria-labelledby="y2021-title">
+      <h2 id="y2021-title" class="visually-hidden">2021</h2>
+      <article id="load-balancer" class="page entry" aria-labelledby="load-balancer-title">
+        <div class="sheet">
+          <span class="year" aria-hidden="true">2021</span>
+          <p class="where">Goldman Sachs, analyst</p>
+          <h3 id="load-balancer-title">Zero-downtime intra-day deployments</h3>
+          <span class="metric">0 downtime</span>
+          <p class="body">I built a custom Java load-balancing service for mission-critical pricing systems, from start to finish. It orchestrates rolling restarts automatically, so patches go out during the trading day without downtime, rather than waiting for a release window.</p>
+            <p class="stack">Java</p>
+          <span class="folio" aria-hidden="true">12 / 20</span>
+        </div>
+      </article>
+      <article id="grpc" class="page entry" aria-labelledby="grpc-title">
+        <div class="sheet">
+          <span class="year" aria-hidden="true">2021</span>
+          <p class="where">Goldman Sachs, analyst</p>
+          <h3 id="grpc-title">Standard gRPC tooling</h3>
+          <span class="metric">−10% latency</span>
+          <p class="body">Shared tooling to standardise gRPC and Protocol Buffers across services, in Java and Python: client scaffolding, authentication middleware and distributed tracing. It helped cut client-server latency by more than 10% across several microservices.</p>
+            <p class="stack">gRPC, Protocol Buffers, Java, Python</p>
+          <span class="folio" aria-hidden="true">13 / 20</span>
+        </div>
+      </article>
+      <article id="monitoring" class="page entry" aria-labelledby="monitoring-title">
+        <div class="sheet">
+          <span class="year" aria-hidden="true">2021</span>
+          <p class="where">Goldman Sachs, analyst</p>
+          <h3 id="monitoring-title">Monitoring the pricing flow</h3>
+          <span class="metric">Real-time</span>
+          <p class="body">I led the rollout of Prometheus monitoring across the core pricing flow, giving real-time visibility into latency and system health. I also extended our tracing, which cut support load and gave performance work real data to go on.</p>
+            <p class="stack">Prometheus, distributed tracing</p>
+          <span class="folio" aria-hidden="true">14 / 20</span>
+        </div>
+      </article>
+    </section>
+    <section id="y2020" class="year-group" tabindex="-1" aria-labelledby="y2020-title">
+      <h2 id="y2020-title" class="visually-hidden">2020</h2>
+      <article id="nairobi" class="page entry" aria-labelledby="nairobi-title">
+        <div class="sheet">
+          <span class="year" aria-hidden="true">2020</span>
+          <p class="where">University of Nairobi</p>
+          <h3 id="nairobi-title">BSc Actuarial Science</h3>
+          <span class="metric">First class</span>
+          <p class="body">Graduated with first-class honours, as the best student in second and final year. Passed the Institute and Faculty of Actuaries papers CM1, CS1 and CB1, and was vice-chair of the Nairobi Actuarial Students’ Association.</p>
+            <p class="stack">Probability, statistics, quantitative modelling</p>
+          <span class="folio" aria-hidden="true">15 / 20</span>
+        </div>
+      </article>
+      <article id="summer-analyst" class="page entry" aria-labelledby="summer-analyst-title">
+        <div class="sheet">
+          <span class="year" aria-hidden="true">2020</span>
+          <p class="where">Goldman Sachs, summer analyst</p>
+          <h3 id="summer-analyst-title">Back-testing pricing models</h3>
+          <span class="metric">5 weeks, remote</span>
+          <p class="body">A visualisation tool that compared new pricing models with the ones they would replace, highlighting where their estimates differed across historical data.</p>
+            <p class="stack">Highcharts, data analysis</p>
           <span class="folio" aria-hidden="true">16 / 20</span>
         </div>
       </article>
     </section>
-    <section id="y2026" class="year-group" tabindex="-1" aria-labelledby="y2026-title">
-      <h2 id="y2026-title" class="visually-hidden">2026</h2>
-      <article id="agent-platform" class="page entry" aria-labelledby="agent-platform-title">
+    <section id="y2019" class="year-group" tabindex="-1" aria-labelledby="y2019-title">
+      <h2 id="y2019-title" class="visually-hidden">2019</h2>
+      <article id="ibm" class="page entry" aria-labelledby="ibm-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2026</span>
-          <p class="where">Goldman Sachs, vice president</p>
-          <h3 id="agent-platform-title">Multi-tenant agent platform</h3>
-          <span class="metric">1 runtime per user</span>
-          <p class="body">An internal platform where each user gets an isolated agent runtime, and traders can ship their own apps with no configuration. It works by convention: one parameterised Dockerfile, the folder name as the app’s identity, per-app CI builds and automatic service discovery. I implemented the A2A protocol on top of our MCP-based orchestration, and rebuilt the task lifecycle as an explicit state machine backed by Redis.</p>
-            <p class="stack">Python, MCP, A2A, Docker, GitHub Actions, Traefik, Redis</p>
+          <span class="year" aria-hidden="true">2019</span>
+          <p class="where">IBM student start-up programme, data analyst</p>
+          <h3 id="ibm-title">A start-up inside a programme</h3>
+          <span class="metric">Team of students</span>
+          <p class="body">IBM gave a small team of university students the chance to run a start-up. I was the data analyst, working mostly in R and Watson Studio.</p>
+            <p class="stack">R, IBM Watson Studio</p>
           <span class="folio" aria-hidden="true">17 / 20</span>
         </div>
       </article>
-      <article id="grounded-chat" class="page entry" aria-labelledby="grounded-chat-title">
+      <article id="liberty" class="page entry" aria-labelledby="liberty-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2026</span>
-          <p class="where">Goldman Sachs, vice president</p>
-          <h3 id="grounded-chat-title">Grounded trading chat</h3>
-          <span class="metric">0 invented figures</span>
-          <p class="body">A chat assistant inside a trading dashboard, where one invented number is a financial risk. Answers are grounded in tool output and cite their sources. The interface renders figures straight from tool results rather than from model text, and an eval suite checks that this keeps holding.</p>
-            <p class="stack">LLM tool use, Braintrust, Promptfoo</p>
+          <span class="year" aria-hidden="true">2019</span>
+          <p class="where">Liberty Life Kenya, actuarial intern</p>
+          <h3 id="liberty-title">Quotation tools and audit trails</h3>
+          <span class="metric">Excel to R</span>
+          <p class="body">I audited actuarial models and wrote their audit trails. With another intern I built a Group Life quotation tool, first in Excel and R Shiny, then automated it with macros. I also investigated annuity payments and unit fund values, and helped value unit-linked products.</p>
+            <p class="stack">R, Shiny, Excel, VBA, Basys</p>
           <span class="folio" aria-hidden="true">18 / 20</span>
         </div>
       </article>
-      <article id="bloomberg" class="page entry" aria-labelledby="bloomberg-title">
+    </section>
+    <section id="y2016" class="year-group" tabindex="-1" aria-labelledby="y2016-title">
+      <h2 id="y2016-title" class="visually-hidden">2016</h2>
+      <article id="archangel" class="page entry" aria-labelledby="archangel-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2026</span>
-          <p class="where">Goldman Sachs, vice president</p>
-          <h3 id="bloomberg-title">Bloomberg chat bots</h3>
-          <span class="metric">3 teams live</span>
-          <p class="body">I’m extending an internal Bloomberg API service so that teams can run interactive bots that listen and reply in chat rooms. Teams define a bot’s behaviour through a lightweight plug-in configuration. Three teams are already using it ahead of the production rollout.</p>
-            <p class="stack">Bloomberg APIs, Python</p>
+          <span class="year" aria-hidden="true">2016</span>
+          <p class="where">Archangel Interactive, front-end intern</p>
+          <h3 id="archangel-title">Where programming started</h3>
+          <span class="metric">First job</span>
+          <p class="body">A summer building and testing websites. It was meant to be a side interest next to actuarial science, but it’s where I learnt I wanted to build things.</p>
+            <p class="stack">HTML, CSS, website testing</p>
           <span class="folio" aria-hidden="true">19 / 20</span>
         </div>
       </article>
-      <article id="conditions" class="page entry" aria-labelledby="conditions-title">
+    </section>
+    <section id="y2015" class="year-group" tabindex="-1" aria-labelledby="y2015-title">
+      <h2 id="y2015-title" class="visually-hidden">2015</h2>
+      <article id="starehe" class="page entry" aria-labelledby="starehe-title">
         <div class="sheet">
-          <span class="year" aria-hidden="true">2026</span>
-          <p class="where">Goldman Sachs, vice president</p>
-          <h3 id="conditions-title">Conditions written by agents</h3>
-          <span class="metric">In progress</span>
-          <p class="body">Letting an agent turn a request like “tell me if this stays above X for three hours” into a strict, auditable contract over live data, which triggers actions when it passes. Simple checks run deterministically and only fuzzy ones go to a smaller model, so costs stay flat as conditions multiply.</p>
-            <p class="stack">System design</p>
+          <span class="year" aria-hidden="true">2015</span>
+          <p class="where">Starehe Boys’ Centre, Nairobi</p>
+          <h3 id="starehe-title">Kenya Certificate of Secondary Education</h3>
+          <span class="metric">Grade A</span>
+          <p class="body">Finished secondary school with an A. Along the way I led student groups including the Research Club, earned Silver and Bronze in the President’s Award scheme, and trained as a first aider with the St John Ambulance cadets.</p>
           <span class="folio" aria-hidden="true">20 / 20</span>
         </div>
       </article>
@@ -740,13 +740,13 @@ a {
       <span class="axis" aria-hidden="true"></span>
       <span class="fill" aria-hidden="true"></span>
       <ol>
-        <li style="--t: 0.0000; --i: 0; --n: 6"><a href="#y2015"><span class="full">2015</span><span class="short" aria-hidden="true">’15</span></a></li>
-        <li style="--t: 0.0909; --i: 1; --n: 6"><a href="#y2016"><span class="full">2016</span><span class="short" aria-hidden="true">’16</span></a></li>
-        <li style="--t: 0.3636; --i: 2; --n: 6"><a href="#y2019"><span class="full">2019</span><span class="short" aria-hidden="true">’19</span></a></li>
-        <li style="--t: 0.4545; --i: 3; --n: 6"><a href="#y2020"><span class="full">2020</span><span class="short" aria-hidden="true">’20</span></a></li>
-        <li style="--t: 0.5455; --i: 4; --n: 6"><a href="#y2021"><span class="full">2021</span><span class="short" aria-hidden="true">’21</span></a></li>
-        <li style="--t: 0.8182; --i: 5; --n: 6"><a href="#y2024"><span class="full">2024</span><span class="short" aria-hidden="true">’24</span></a></li>
-        <li style="--t: 1.0000; --i: 6; --n: 6"><a href="#y2026"><span class="full">2026</span><span class="short" aria-hidden="true">’26</span></a></li>
+        <li style="--t: 0.0000; --i: 0; --n: 6"><a href="#y2026"><span class="full">2026</span><span class="short" aria-hidden="true">’26</span></a></li>
+        <li style="--t: 0.1818; --i: 1; --n: 6"><a href="#y2024"><span class="full">2024</span><span class="short" aria-hidden="true">’24</span></a></li>
+        <li style="--t: 0.4545; --i: 2; --n: 6"><a href="#y2021"><span class="full">2021</span><span class="short" aria-hidden="true">’21</span></a></li>
+        <li style="--t: 0.5455; --i: 3; --n: 6"><a href="#y2020"><span class="full">2020</span><span class="short" aria-hidden="true">’20</span></a></li>
+        <li style="--t: 0.6364; --i: 4; --n: 6"><a href="#y2019"><span class="full">2019</span><span class="short" aria-hidden="true">’19</span></a></li>
+        <li style="--t: 0.9091; --i: 5; --n: 6"><a href="#y2016"><span class="full">2016</span><span class="short" aria-hidden="true">’16</span></a></li>
+        <li style="--t: 1.0000; --i: 6; --n: 6"><a href="#y2015"><span class="full">2015</span><span class="short" aria-hidden="true">’15</span></a></li>
       </ol>
     </div>
   </nav>
