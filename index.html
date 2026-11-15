@@ -10,7 +10,7 @@
   <meta name="theme-color" content="#F1F3F2" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121920" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Joshua Mwangi Maina, software engineer">
-  <meta property="og:description" content="Pricing infrastructure and LLM systems that have to be right.">
+  <meta property="og:description" content="Systems that have to be right, pressed to vinyl.">
   <meta property="og:type" content="profile">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/fonts/schibsted-grotesk-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -63,19 +63,29 @@
   --cobalt: light-dark(#2747D0, #8EA4FF);
   --mark: light-dark(#FFE48A, #4A3F12);
 
+  /* The physical objects keep their colours in both schemes */
+  --sleeve: #2747D0;
+  --sleeve-ink: #F1F3F2;
+  --vinyl: #000;
+  --groove: #1C1F24;
+  --label: #FFE48A;
+  --label-ink: #18212B;
+  --arm: light-dark(#8B949C, #B5BDC4);
+
   --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Schibsted Grotesk", system-ui, sans-serif;
 
-  /* Scale with ratio 1.25. Sizes are rem-based so they follow user and OS text settings. */
   --step-0: clamp(1.125rem, 1.08rem + 0.2vw, 1.25rem);
   --step--1: calc(var(--step-0) / 1.25);
   --step-1: calc(var(--step-0) * 1.25);
   --step-2: calc(var(--step-0) * 1.5625);
-  --step-4: clamp(2.25rem, 1.6rem + 3vw, 3.75rem);
+  --step-4: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
 
-  --measure: 64ch;
+  --measure: 62ch;
   --gutter: clamp(1.25rem, 4vw, 3rem);
-  --space: 1.5rem;
+
+  /* 33⅓ rpm */
+  --rev: 1.8s;
 }
 
 /* Base -------------------------------------------------------------- */
@@ -124,6 +134,7 @@ a {
   position: absolute;
   inset-inline-start: var(--gutter);
   inset-block-start: -4rem;
+  z-index: 10;
   padding: 0.5rem 0.75rem;
   background: var(--ink);
   color: var(--paper);
@@ -131,36 +142,44 @@ a {
   &:focus { inset-block-start: 1rem; }
 }
 
-/* Layout ------------------------------------------------------------ */
-.site-header,
-main > section,
-.site-footer {
-  width: min(100% - 2 * var(--gutter), 72rem);
-  margin-inline: auto;
-}
-
+/* Page frame -------------------------------------------------------- */
 .site-header {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 2rem;
   justify-content: space-between;
   align-items: baseline;
-  padding-block: 1.75rem;
+  padding: 1.5rem var(--gutter);
   font-family: var(--sans);
   font-size: var(--step--1);
 
-  & .name {
-    color: var(--ink);
-    font-weight: 700;
-    text-decoration: none;
-  }
-
+  & .name { color: var(--ink); font-weight: 700; text-decoration: none; }
   & ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
   & nav a { color: var(--muted); text-decoration: none; }
   & nav a:hover { color: var(--ink); text-decoration: underline; }
 }
 
-main > section { padding-block: clamp(3rem, 8vw, 6rem); }
+.layout {
+  display: grid;
+  gap: 2rem var(--gutter);
+  padding-inline: var(--gutter);
+}
+
+@media (width >= 64em) {
+  .layout {
+    grid-template-columns: minmax(22rem, 5fr) 7fr;
+    align-items: start;
+  }
+  .deck-col {
+    position: sticky;
+    inset-block-start: 0;
+    min-block-size: 100dvh;
+    display: grid;
+    align-content: center;
+  }
+}
+
+main > section { padding-block: clamp(2.5rem, 7vw, 5rem); }
 main > section + section { border-block-start: 1px solid var(--rule); }
 
 h2 {
@@ -168,37 +187,195 @@ h2 {
   font-size: var(--step-2);
   font-weight: 500;
   letter-spacing: -0.01em;
-  margin-block-end: 2.5rem;
+  margin-block-end: 2rem;
 }
 
-/* Statement: the one loud thing ------------------------------------- */
-.statement {
-  padding-block-start: clamp(2rem, 6vw, 4.5rem);
+/* The deck: sleeve, record, tonearm --------------------------------- */
+.deck {
+  position: relative;
+  inline-size: min(100%, 36rem);
+  aspect-ratio: 1.55;
+  margin-inline: auto;
+  overflow-x: clip;
+  overflow-clip-margin: 1rem;
+}
 
+.sleeve {
+  position: absolute;
+  inset-block-start: 4%;
+  inset-inline-start: 0;
+  z-index: 2;
+  inline-size: 54%;
+  aspect-ratio: 1;
+  display: grid;
+  align-content: space-between;
+  padding: 7%;
+  background:
+    radial-gradient(circle at 78% 22%, rgb(255 255 255 / 0.14), transparent 45%),
+    var(--sleeve);
+  color: var(--sleeve-ink);
+  font-family: var(--sans);
+  box-shadow: 0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.45);
+  border-radius: 3px;
+  container-type: inline-size;
+
+  & .sleeve-title {
+    font-size: 13cqi;
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+  }
+  & .sleeve-sub {
+    font-size: 5.5cqi;
+    font-weight: 500;
+    line-height: 1.2;
+    opacity: 0.85;
+  }
+}
+
+.record-slot {
+  position: absolute;
+  inset-block-start: 5%;
+  inset-inline-start: 30%;
+  z-index: 1;
+  inline-size: 60%;
+  aspect-ratio: 1;
+}
+
+.record {
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 32%, rgb(255 255 255 / 0.06) 32.5% 33%, transparent 33.5%),
+    repeating-radial-gradient(circle, var(--vinyl) 0 2px, var(--groove) 2px 3px);
+  box-shadow:
+    0 0 0 1px light-dark(transparent, rgb(255 255 255 / 0.14)),
+    0 1rem 2rem -1rem rgb(0 0 0 / 0.6);
+  display: grid;
+  place-items: center;
+  container-type: inline-size;
+  animation: spin var(--rev) linear infinite paused;
+}
+
+/* Light catching the grooves stays still while the record turns */
+.record-slot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 20deg,
+    transparent 0 10%, rgb(255 255 255 / 0.12) 14%, transparent 20% 52%,
+    rgb(255 255 255 / 0.09) 57%, transparent 63%);
+  pointer-events: none;
+}
+
+.label {
+  inline-size: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--label);
+  color: var(--label-ink);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 4cqi;
+  font-weight: 700;
+  line-height: 1.1;
+  position: relative;
+
+  /* Spindle hole */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 46%;
+    border-radius: 50%;
+    background: var(--paper);
+  }
+  & .label-top, & .label-bottom { position: absolute; inset-inline: 0; }
+  & .label-top { inset-block-start: 18%; }
+  & .label-bottom { inset-block-end: 18%; font-weight: 500; font-size: 3.2cqi; }
+}
+
+.tonearm {
+  position: absolute;
+  inset-block-start: -1%;
+  inset-inline-end: 0;
+  z-index: 3;
+  inline-size: 17%;
+  transform-origin: 72% 9%;
+  rotate: -14deg;
+  transition: rotate 700ms cubic-bezier(0.3, 1.4, 0.5, 1);
+
+  & path, & line { stroke: var(--arm); }
+  & circle { fill: var(--arm); }
+  & rect { fill: var(--ink); }
+}
+
+.now-playing {
+  margin-block-start: 1.25rem;
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--muted);
+  text-align: center;
+  min-block-size: 3lh;
+
+  & strong { color: var(--ink); font-weight: 500; }
+  & .np { display: none; }
+  & .stop { display: none; margin-inline-start: 0.5rem; }
+}
+
+/* Playing state: any track targeted ---------------------------------- */
+body:has(.track:target) {
+  & .record { animation-play-state: running; }
+  & .tonearm { rotate: 16deg; }
+  & .np-idle { display: none; }
+  & .stop { display: inline; }
+}
+
+@keyframes spin { to { rotate: 1turn; } }
+
+/* One orchestrated moment: the record slides out of its sleeve */
+@media (prefers-reduced-motion: no-preference) {
+  .record-slot { animation: slide-out 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) 200ms backwards; }
+  @keyframes slide-out { from { translate: -42% 0; } }
+}
+
+/* Without motion the record never turns, but the arm still drops */
+@media (prefers-reduced-motion: reduce) {
+  .record { animation: none; }
+  .tonearm { transition: none; }
+}
+
+/* Liner notes (intro) ------------------------------------------------ */
+.statement {
   & h1 {
     font-family: var(--sans);
     font-size: var(--step-4);
     font-weight: 500;
     line-height: 1.05;
     letter-spacing: -0.025em;
-    max-width: 18ch;
-    margin-block-end: clamp(2rem, 4vw, 3rem);
+    max-width: 16ch;
+    margin-block-end: 2rem;
   }
-
-  & .lede {
-    font-size: var(--step-1);
-    line-height: 1.5;
-    max-width: var(--measure);
-  }
-
-  & .sub {
-    margin-block-start: var(--space);
-    max-width: 58ch;
-    color: var(--muted);
+  & .lede { font-size: var(--step-1); line-height: 1.5; max-width: var(--measure); }
+  & .sub { margin-block-start: 1.5rem; max-width: 56ch; color: var(--muted); }
+  & .play-cta {
+    display: inline-block;
+    margin-block-start: 1.75rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: var(--step--1);
+    font-weight: 500;
+    text-decoration: none;
+    &:hover { background: var(--cobalt); color: var(--sleeve-ink); }
   }
 }
 
-/* Citation marks */
 .cite {
   font-family: var(--sans);
   font-size: 0.6em;
@@ -210,39 +387,29 @@ h2 {
   padding: 0.1em 0.15em;
   border-radius: 3px;
   text-decoration: none;
-
   &:hover, &:focus-visible { background-color: var(--mark); color: var(--ink); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .cite { transition: background-color 150ms ease; }
-  .ref { transition: background-color 400ms ease; }
-}
-
-/* Work references: one counter runs 1–12 across both groups ---------- */
-.work { counter-reset: ref; }
-
-.group {
+/* Tracklist ---------------------------------------------------------- */
+.side {
   font-family: var(--sans);
   font-size: var(--step--1);
   font-weight: 500;
   color: var(--muted);
-  margin-block: 3rem 1.25rem;
+  margin-block: 3rem 1rem;
   &:first-of-type { margin-block-start: 0; }
 }
 
-.ref {
-  counter-increment: ref;
+.track {
   display: grid;
-  grid-template-columns: 2.25rem minmax(0, var(--measure));
-  column-gap: 0.25rem;
-  padding-block: 1.5rem;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  column-gap: 0.75rem;
+  padding-block: 1.25rem;
   border-block-start: 1px solid var(--rule);
-  scroll-margin-block-start: 2rem;
+  scroll-margin-block-start: 1.5rem;
+  max-inline-size: 48rem;
 
-  &::before {
-    content: counter(ref);
-    grid-row: 1 / span 3;
+  & .no {
     font-family: var(--sans);
     font-weight: 700;
     font-size: var(--step--1);
@@ -250,54 +417,71 @@ h2 {
     color: var(--cobalt);
     padding-block-start: 0.2em;
   }
-
   & h4 {
     font-family: var(--sans);
     font-size: var(--step-0);
     font-weight: 500;
-    margin-block-end: 0.5rem;
+    & a { color: var(--ink); text-decoration: none; }
+    & a:hover { text-decoration: underline; }
   }
-
+  & .metric {
+    font-family: var(--sans);
+    font-size: var(--step--1);
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--muted);
+    padding-block-start: 0.2em;
+    text-align: end;
+  }
+  & .notes { grid-column: 2 / -1; }
+  & .notes p { margin-block-start: 0.5rem; max-inline-size: var(--measure); }
   & .stack {
-    margin-block-start: 0.75rem;
     font-family: var(--sans);
     font-size: var(--step--1);
     color: var(--muted);
   }
 
-  /* Arriving from a citation highlights the source */
   &:target {
-    background-color: var(--mark);
-    background-image: linear-gradient(to right, var(--mark), var(--paper) 85%);
-    outline: 2px solid transparent; /* becomes visible in forced colours */
+    background: linear-gradient(to right, var(--mark), var(--paper) 90%);
+    outline: 2px solid transparent;
   }
 }
 
-/* Wide screens: the tech stack moves into the margin as a side note */
-@media (width >= 64em) {
-  .ref {
-    grid-template-columns: 3rem minmax(0, var(--measure)) 1fr;
-    column-gap: 2.5rem;
+/* Equaliser beside the playing track */
+.eq {
+  display: none;
+  gap: 2px;
+  align-items: end;
+  block-size: 0.9em;
+  margin-inline-start: 0.5rem;
+  vertical-align: baseline;
+  & i { inline-size: 3px; block-size: 100%; background: var(--cobalt); transform-origin: bottom; }
+  & i:nth-child(2) { scale: 1 0.55; }
+  & i:nth-child(3) { scale: 1 0.8; }
+}
+.track:target .eq { display: inline-flex; }
 
-    & h4, & p:not(.stack) { grid-column: 2; }
-    & .stack {
-      grid-column: 3;
-      grid-row: 1 / span 2;
-      margin: 0;
-      padding-block-start: 0.2em;
-      max-width: 22ch;
-    }
-  }
+@media (prefers-reduced-motion: no-preference) {
+  .track:target .eq i { animation: bounce 900ms ease-in-out infinite alternate; }
+  .track:target .eq i:nth-child(2) { animation-delay: -300ms; }
+  .track:target .eq i:nth-child(3) { animation-delay: -600ms; }
+  @keyframes bounce { from { scale: 1 0.25; } to { scale: 1 1; } }
 }
 
-/* Path: a real sequence, so it's drawn as a timeline ----------------- */
+.hint {
+  margin-block-start: 1rem;
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* Credits (career path) ---------------------------------------------- */
 .steps {
   max-width: var(--measure);
   border-inline-start: 2px solid var(--rule);
 
   & li {
     position: relative;
-    padding-block-end: 2rem;
+    padding-block-end: 1.75rem;
     padding-inline-start: 1.75rem;
 
     &::before {
@@ -311,28 +495,15 @@ h2 {
       background: var(--paper);
       border: 2px solid var(--cobalt);
     }
-
     &:last-child { padding-block-end: 0; }
     &:last-child::before { background: var(--cobalt); }
   }
-
-  & h3 {
-    font-family: var(--sans);
-    font-size: var(--step-0);
-    font-weight: 500;
-    margin-block-end: 0.25rem;
-  }
-
+  & h3 { font-family: var(--sans); font-size: var(--step-0); font-weight: 500; margin-block-end: 0.25rem; }
   & p { color: var(--muted); }
 }
 
-.aside {
-  margin-block-start: 2.5rem;
-  max-width: var(--measure);
-  font-style: italic;
-}
+.aside { margin-block-start: 2.25rem; max-width: var(--measure); font-style: italic; }
 
-/* Contact ----------------------------------------------------------- */
 .contact .links {
   display: flex;
   flex-wrap: wrap;
@@ -343,20 +514,36 @@ h2 {
 }
 
 .site-footer {
-  padding-block: 2rem 3rem;
+  padding: 2rem var(--gutter) 3rem;
   border-block-start: 1px solid var(--rule);
   font-family: var(--sans);
   font-size: var(--step--1);
   color: var(--muted);
 }
 
-/* Forced colours: keep highlights and markers visible ---------------- */
+/* Forced colours ------------------------------------------------------ */
 @media (forced-colors: active) {
-  .ref:target { outline-color: Highlight; outline-offset: 4px; }
-  .cite:hover, .cite:focus-visible { outline: 1px solid LinkText; }
+  .sleeve, .record, .label { border: 2px solid CanvasText; }
+  .tonearm path, .tonearm line { stroke: CanvasText; }
+  .tonearm circle, .tonearm rect, .eq i { fill: CanvasText; background: CanvasText; }
+  .track:target { outline-color: Highlight; outline-offset: 4px; }
+  .play-cta { border: 1px solid LinkText; }
   .steps li::before { border-color: CanvasText; }
-  .steps li:last-child::before { background: CanvasText; }
 }
+
+/* Now playing captions, one per track */
+body:has(#track-1:target) .np-1 { display: inline; }
+body:has(#track-2:target) .np-2 { display: inline; }
+body:has(#track-3:target) .np-3 { display: inline; }
+body:has(#track-4:target) .np-4 { display: inline; }
+body:has(#track-5:target) .np-5 { display: inline; }
+body:has(#track-6:target) .np-6 { display: inline; }
+body:has(#track-7:target) .np-7 { display: inline; }
+body:has(#track-8:target) .np-8 { display: inline; }
+body:has(#track-9:target) .np-9 { display: inline; }
+body:has(#track-10:target) .np-10 { display: inline; }
+body:has(#track-11:target) .np-11 { display: inline; }
+body:has(#track-12:target) .np-12 { display: inline; }
   </style>
 </head>
 <body>
@@ -366,198 +553,251 @@ h2 {
     <a class="name" href="/">Joshua Mwangi Maina</a>
     <nav aria-label="Primary">
       <ul>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#path">Path</a></li>
+        <li><a href="#tracklist">Tracklist</a></li>
+        <li><a href="#credits">Credits</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
   </header>
 
-  <main id="main">
-    <section class="statement" aria-labelledby="statement-title">
-      <h1 id="statement-title">Joshua Mwangi Maina builds systems where a wrong number costs money.</h1>
-      <p class="lede">
-        At Goldman Sachs that has meant pricing infrastructure. I built a clustered cache that made
-        cross-asset pricing more than ten times faster<a class="cite" href="#ref-1" aria-label="See reference 1">1</a>,
-        a load balancer that lets us deploy to pricing systems mid-session with zero downtime<a class="cite" href="#ref-2" aria-label="See reference 2">2</a>,
-        and a new way to ship a core library that cut service start-up time by 90%<a class="cite" href="#ref-3" aria-label="See reference 3">3</a>.
-        Lately it means LLM agents: a platform where every user gets an isolated agent runtime<a class="cite" href="#ref-9" aria-label="See reference 9">9</a>,
-        and a trading chat that can’t make up a figure<a class="cite" href="#ref-10" aria-label="See reference 10">10</a>.
+  <div class="layout">
+    <div class="deck-col">
+      <div class="deck" aria-hidden="true">
+        <div class="sleeve">
+          <span class="sleeve-title">Systems that have to be right</span>
+          <span class="sleeve-sub">Joshua Mwangi Maina<br>Side A pricing, side B AI</span>
+        </div>
+        <div class="record-slot">
+          <div class="record">
+            <div class="label">
+              <span class="label-top">JMM</span>
+              <span class="label-bottom">33⅓</span>
+            </div>
+          </div>
+        </div>
+        <svg class="tonearm" viewBox="0 0 100 220" fill="none">
+          <circle cx="72" cy="20" r="14"/>
+          <path d="M72 20 L60 150 L40 186" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="26" y="180" width="22" height="30" rx="4" transform="rotate(30 37 195)"/>
+        </svg>
+      </div>
+      <p class="now-playing">
+        <span class="np-idle">Pick a track to drop the needle.</span>
+        <span class="np np-1">Now playing <strong>track 01, Clustered pricing cache</strong></span>
+        <span class="np np-2">Now playing <strong>track 02, Zero-downtime intra-day deployments</strong></span>
+        <span class="np np-3">Now playing <strong>track 03, 90% faster service start-up</strong></span>
+        <span class="np np-4">Now playing <strong>track 04, Standard gRPC tooling</strong></span>
+        <span class="np np-5">Now playing <strong>track 05, From OpenTracing to OpenTelemetry</strong></span>
+        <span class="np np-6">Now playing <strong>track 06, Monitoring the pricing flow</strong></span>
+        <span class="np np-7">Now playing <strong>track 07, Shared worker pool framework</strong></span>
+        <span class="np np-8">Now playing <strong>track 08, Multi-region auto-scaling</strong></span>
+        <span class="np np-9">Now playing <strong>track 09, Multi-tenant agent platform</strong></span>
+        <span class="np np-10">Now playing <strong>track 10, Grounded trading chat</strong></span>
+        <span class="np np-11">Now playing <strong>track 11, Bloomberg chat bots</strong></span>
+        <span class="np np-12">Now playing <strong>track 12, Conditions written by agents</strong></span>
+        <a class="stop" href="#tracklist">Lift the needle</a>
       </p>
-      <p class="sub">
-        Vice President and software engineer in London, working in Java and Python. I trained as an
-        actuary, so I still think in failure modes and evidence. The small numbers are citations:
-        each claim links to the work behind it.
-      </p>
-    </section>
+    </div>
 
-    <section id="work" class="work" aria-labelledby="work-title">
-      <h2 id="work-title">Work</h2>
+    <main id="main">
+      <section class="statement" aria-labelledby="statement-title">
+        <h1 id="statement-title">Joshua Mwangi Maina builds systems where a wrong number costs money.</h1>
+        <p class="lede">
+          At Goldman Sachs that has meant pricing infrastructure. I built a clustered cache that made
+          cross-asset pricing more than ten times faster<a class="cite" href="#track-1" aria-label="Play track 1">1</a>,
+          a load balancer that lets us deploy to pricing systems mid-session with zero downtime<a class="cite" href="#track-2" aria-label="Play track 2">2</a>,
+          and a new way to ship a core library that cut service start-up time by 90%<a class="cite" href="#track-3" aria-label="Play track 3">3</a>.
+          Lately it means LLM agents: a platform where every user gets an isolated agent runtime<a class="cite" href="#track-9" aria-label="Play track 9">9</a>,
+          and a trading chat that can’t make up a figure<a class="cite" href="#track-10" aria-label="Play track 10">10</a>.
+        </p>
+        <p class="sub">
+          Vice President and software engineer in London, working in Java and Python. I trained as an
+          actuary, so I still think in failure modes and evidence. The small numbers are track numbers:
+          press one to play the work behind the claim.
+        </p>
+        <a class="play-cta" href="#track-1">Play side A</a>
+      </section>
 
-      <h3 class="group">Pricing and trading infrastructure</h3>
-      <ol class="refs">
-        <li id="ref-1" class="ref">
-          <h4>Clustered pricing cache</h4>
-          <p>
-            I led the design and rollout of a clustered Hazelcast cache for cross-asset pricing, and it made
-            pricing more than ten times faster. It handles product-specific pricing rules for more than ten
-            instrument types. Operators can switch it on or off at runtime from a dashboard, and continuous
-            monitoring and end-to-end validation tests check every result.
-          </p>
-          <p class="stack">Java, Hazelcast</p>
-        </li>
-        <li id="ref-2" class="ref">
-          <h4>Zero-downtime intra-day deployments</h4>
-          <p>
-            I built a custom Java load-balancing service for mission-critical pricing systems, from start
-            to finish. It orchestrates rolling restarts automatically, so patches go out during the trading
-            day without downtime, rather than waiting for a release window.
-          </p>
-          <p class="stack">Java</p>
-        </li>
-        <li id="ref-3" class="ref">
-          <h4>90% faster service start-up</h4>
-          <p>
-            A critical library used to be downloaded at runtime when each service started. I changed its
-            release model so it is pre-deployed to application hosts, which cut start-up time by 90% across
-            every service the team owns. Its releases now follow the same rollout standards as production.
-          </p>
-          <p class="stack">Release engineering</p>
-        </li>
-        <li id="ref-4" class="ref">
-          <h4>Standard gRPC tooling</h4>
-          <p>
-            Shared tooling to standardise gRPC and Protocol Buffers across services, in Java and Python:
-            client scaffolding, authentication middleware and distributed tracing. It helped cut
-            client-server latency by more than 10% across several microservices.
-          </p>
-          <p class="stack">gRPC, Protocol Buffers, Java, Python</p>
-        </li>
-        <li id="ref-5" class="ref">
-          <h4>From OpenTracing to OpenTelemetry</h4>
-          <p>
-            OpenTracing was archived, so I led the move off it. I designed an internal tracing abstraction
-            and refactored our repositories to use it. We swapped the backend to OpenTelemetry without
-            touching application code, and the next migration will be just as easy.
-          </p>
-          <p class="stack">OpenTelemetry, Java</p>
-        </li>
-        <li id="ref-6" class="ref">
-          <h4>Monitoring the pricing flow</h4>
-          <p>
-            I led the rollout of Prometheus monitoring across the core pricing flow, giving real-time
-            visibility into latency and system health. I also extended our tracing, which cut support load
-            and gave performance work real data to go on.
-          </p>
-          <p class="stack">Prometheus, distributed tracing</p>
-        </li>
-        <li id="ref-7" class="ref">
-          <h4>Shared worker pool framework</h4>
-          <p>
-            I co-led the design and led the build of a scalable Python worker pool framework. It replaced
-            several team-specific versions with one shared platform, which now runs internal and
-            client-facing products.
-          </p>
-          <p class="stack">Python</p>
-        </li>
-        <li id="ref-8" class="ref">
-          <h4>Multi-region auto-scaling</h4>
-          <p>
-            I helped build a configurable, multi-region auto-scaling framework for pricing systems. It adds
-            capacity under heavy trading load and scales down when markets are quiet.
-          </p>
-          <p class="stack">Kubernetes</p>
-        </li>
-      </ol>
+      <section id="tracklist" aria-labelledby="tracklist-title">
+        <h2 id="tracklist-title">Tracklist</h2>
 
-      <h3 class="group">AI and agents</h3>
-      <ol class="refs" start="9">
-        <li id="ref-9" class="ref">
-          <h4>Multi-tenant agent platform</h4>
-          <p>
-            An internal platform where each user gets an isolated agent runtime, and traders can ship their
-            own apps with no configuration. It grew out of moving five teams from bespoke dashboards onto
-            one shared platform. It works by convention: one parameterised Dockerfile, the folder name as
-            the app’s identity, per-app CI builds and automatic service discovery. I implemented the A2A
-            protocol on top of our MCP-based orchestration, and rebuilt the task lifecycle as an explicit
-            state machine backed by Redis.
-          </p>
-          <p class="stack">Python, MCP, A2A, Docker, GitHub Actions, Traefik, Redis</p>
+        <h3 class="side">Side A: pricing and trading infrastructure</h3>
+        <ol>
+        <li id="track-1" class="track">
+          <span class="no" aria-hidden="true">01</span>
+          <h4><a href="#track-1">Clustered pricing cache</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">10× faster</span>
+          <div class="notes">
+            <p>I led the design and rollout of a clustered Hazelcast cache for cross-asset pricing, and it made pricing more than ten times faster. It handles product-specific pricing rules for more than ten instrument types. Operators can switch it on or off at runtime from a dashboard, and continuous monitoring and end-to-end validation tests check every result.</p>
+            <p class="stack">Java, Hazelcast</p>
+          </div>
         </li>
-        <li id="ref-10" class="ref">
-          <h4>Grounded trading chat</h4>
-          <p>
-            A chat assistant inside a trading dashboard, where one invented number is a financial risk.
-            Answers are grounded in tool output and cite their sources. The interface renders figures
-            straight from tool results rather than from model text, and an eval suite checks that this
-            keeps holding.
-          </p>
-          <p class="stack">LLM tool use, Braintrust, Promptfoo</p>
+        <li id="track-2" class="track">
+          <span class="no" aria-hidden="true">02</span>
+          <h4><a href="#track-2">Zero-downtime intra-day deployments</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">0 downtime</span>
+          <div class="notes">
+            <p>I built a custom Java load-balancing service for mission-critical pricing systems, from start to finish. It orchestrates rolling restarts automatically, so patches go out during the trading day without downtime, rather than waiting for a release window.</p>
+            <p class="stack">Java</p>
+          </div>
         </li>
-        <li id="ref-11" class="ref">
-          <h4>Bloomberg chat bots</h4>
-          <p>
-            I’m extending an internal Bloomberg API service so that teams can run interactive bots that listen
-            and reply in chat rooms. Teams define a bot’s behaviour through a lightweight plug-in
-            configuration. Three teams are already using it ahead of the production rollout.
-          </p>
-          <p class="stack">Bloomberg APIs, Python</p>
+        <li id="track-3" class="track">
+          <span class="no" aria-hidden="true">03</span>
+          <h4><a href="#track-3">90% faster service start-up</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">−90% start-up</span>
+          <div class="notes">
+            <p>A critical library used to be downloaded at runtime when each service started. I changed its release model so it is pre-deployed to application hosts, which cut start-up time by 90% across every service the team owns. Its releases now follow the same rollout standards as production.</p>
+            <p class="stack">Release engineering</p>
+          </div>
         </li>
-        <li id="ref-12" class="ref">
-          <h4>Conditions written by agents</h4>
-          <p>
-            In progress: letting an agent turn a request like “tell me if this stays above X for three hours”
-            into a strict, auditable contract over live data, which triggers actions when it passes. Simple
-            checks run deterministically and only fuzzy ones go to a smaller model, so costs stay flat as
-            conditions multiply.
-          </p>
-          <p class="stack">System design</p>
+        <li id="track-4" class="track">
+          <span class="no" aria-hidden="true">04</span>
+          <h4><a href="#track-4">Standard gRPC tooling</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">−10% latency</span>
+          <div class="notes">
+            <p>Shared tooling to standardise gRPC and Protocol Buffers across services, in Java and Python: client scaffolding, authentication middleware and distributed tracing. It helped cut client-server latency by more than 10% across several microservices.</p>
+            <p class="stack">gRPC, Protocol Buffers, Java, Python</p>
+          </div>
         </li>
-      </ol>
-    </section>
+        <li id="track-5" class="track">
+          <span class="no" aria-hidden="true">05</span>
+          <h4><a href="#track-5">From OpenTracing to OpenTelemetry</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">Zero rewrites</span>
+          <div class="notes">
+            <p>OpenTracing was archived, so I led the move off it. I designed an internal tracing abstraction and refactored our repositories to use it. We swapped the backend to OpenTelemetry without touching application code, and the next migration will be just as easy.</p>
+            <p class="stack">OpenTelemetry, Java</p>
+          </div>
+        </li>
+        <li id="track-6" class="track">
+          <span class="no" aria-hidden="true">06</span>
+          <h4><a href="#track-6">Monitoring the pricing flow</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">Real-time</span>
+          <div class="notes">
+            <p>I led the rollout of Prometheus monitoring across the core pricing flow, giving real-time visibility into latency and system health. I also extended our tracing, which cut support load and gave performance work real data to go on.</p>
+            <p class="stack">Prometheus, distributed tracing</p>
+          </div>
+        </li>
+        <li id="track-7" class="track">
+          <span class="no" aria-hidden="true">07</span>
+          <h4><a href="#track-7">Shared worker pool framework</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">Many → one</span>
+          <div class="notes">
+            <p>I co-led the design and led the build of a scalable Python worker pool framework. It replaced several team-specific versions with one shared platform, which now runs internal and client-facing products.</p>
+            <p class="stack">Python</p>
+          </div>
+        </li>
+        <li id="track-8" class="track">
+          <span class="no" aria-hidden="true">08</span>
+          <h4><a href="#track-8">Multi-region auto-scaling</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">Scales both ways</span>
+          <div class="notes">
+            <p>I helped build a configurable, multi-region auto-scaling framework for pricing systems. It adds capacity under heavy trading load and scales down when markets are quiet.</p>
+            <p class="stack">Kubernetes</p>
+          </div>
+        </li>
+        </ol>
 
-    <section id="path" class="path" aria-labelledby="path-title">
-      <h2 id="path-title">Path</h2>
-      <ol class="steps">
-        <li>
-          <h3>BSc Actuarial Science, University of Nairobi</h3>
-          <p>Best student in second and final year. Vice-chair of the Actuarial Students Association.</p>
+        <h3 class="side">Side B: AI and agents</h3>
+        <ol>
+        <li id="track-9" class="track">
+          <span class="no" aria-hidden="true">09</span>
+          <h4><a href="#track-9">Multi-tenant agent platform</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">1 runtime per user</span>
+          <div class="notes">
+            <p>An internal platform where each user gets an isolated agent runtime, and traders can ship their own apps with no configuration. It grew out of moving five teams from bespoke dashboards onto one shared platform. It works by convention: one parameterised Dockerfile, the folder name as the app’s identity, per-app CI builds and automatic service discovery. I implemented the A2A protocol on top of our MCP-based orchestration, and rebuilt the task lifecycle as an explicit state machine backed by Redis.</p>
+            <p class="stack">Python, MCP, A2A, Docker, GitHub Actions, Traefik, Redis</p>
+          </div>
         </li>
-        <li>
-          <h3><time datetime="2020-07">2020</time>, summer analyst, Goldman Sachs</h3>
-          <p>Built a back-testing tool that compared new pricing models with the old ones across historical data.</p>
+        <li id="track-10" class="track">
+          <span class="no" aria-hidden="true">10</span>
+          <h4><a href="#track-10">Grounded trading chat</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">0 invented figures</span>
+          <div class="notes">
+            <p>A chat assistant inside a trading dashboard, where one invented number is a financial risk. Answers are grounded in tool output and cite their sources. The interface renders figures straight from tool results rather than from model text, and an eval suite checks that this keeps holding.</p>
+            <p class="stack">LLM tool use, Braintrust, Promptfoo</p>
+          </div>
         </li>
-        <li>
-          <h3><time datetime="2021-06">2021</time>, analyst</h3>
-          <p>gRPC tooling, pricing-flow monitoring and the zero-downtime load balancer.</p>
+        <li id="track-11" class="track">
+          <span class="no" aria-hidden="true">11</span>
+          <h4><a href="#track-11">Bloomberg chat bots</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">3 teams live</span>
+          <div class="notes">
+            <p>I’m extending an internal Bloomberg API service so that teams can run interactive bots that listen and reply in chat rooms. Teams define a bot’s behaviour through a lightweight plug-in configuration. Three teams are already using it ahead of the production rollout.</p>
+            <p class="stack">Bloomberg APIs, Python</p>
+          </div>
         </li>
-        <li>
-          <h3><time datetime="2024-01">2024</time>, associate</h3>
-          <p>The pricing cache, the start-up work, the tracing migration, worker pools and the shared platform.</p>
+        <li id="track-12" class="track">
+          <span class="no" aria-hidden="true">12</span>
+          <h4><a href="#track-12">Conditions written by agents</a><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></h4>
+          <span class="metric">In the studio</span>
+          <div class="notes">
+            <p>In progress: letting an agent turn a request like “tell me if this stays above X for three hours” into a strict, auditable contract over live data, which triggers actions when it passes. Simple checks run deterministically and only fuzzy ones go to a smaller model, so costs stay flat as conditions multiply.</p>
+            <p class="stack">System design</p>
+          </div>
         </li>
-        <li>
-          <h3><time datetime="2026-01">2026</time>, vice president</h3>
-          <p>Agent platforms, grounded AI for traders and Bloomberg chat bots.</p>
-        </li>
-      </ol>
-      <p class="aside">
-        Finalist, Black Developer of the Year, Black Tech Awards. I also mentor students moving into
-        finance and technology.
-      </p>
-    </section>
+        </ol>
+        <p class="hint">Press a track title to put it on the turntable.</p>
+      </section>
 
-    <section id="contact" class="contact" aria-labelledby="contact-title">
-      <h2 id="contact-title">Contact</h2>
-      <p>The best way to reach me is a message on LinkedIn.</p>
-      <ul class="links">
-        <li><a href="https://www.linkedin.com/in/joshua-mwangi-32ab9879/" rel="me">LinkedIn</a></li>
-        <li><a href="https://github.com/JoshuaMaina" rel="me">GitHub</a></li>
-      </ul>
-    </section>
-  </main>
+      <section id="credits" aria-labelledby="credits-title">
+        <h2 id="credits-title">Credits</h2>
+        <ol class="steps">
+          <li>
+            <h3><time datetime="2015">2015</time>, Starehe Boys’ Centre</h3>
+            <p>Kenya Certificate of Secondary Education, grade A.</p>
+          </li>
+          <li>
+            <h3><time datetime="2016-06">2016</time>, front-end intern, Archangel Interactive</h3>
+            <p>My first job building websites, and where programming started for me.</p>
+          </li>
+          <li>
+            <h3><time datetime="2016">2016</time> to <time datetime="2020">2020</time>, BSc Actuarial Science, University of Nairobi</h3>
+            <p>First-class honours, and best student in second and final year. Passed the Institute and Faculty of Actuaries papers CM1, CS1 and CB1. Vice-chair of the Nairobi Actuarial Students’ Association.</p>
+          </li>
+          <li>
+            <h3><time datetime="2019-05">2019</time>, actuarial intern, Liberty Life Kenya</h3>
+            <p>Audited actuarial models and wrote their audit trails. Built a Group Life quotation tool with another intern, first in Excel and R Shiny, then automated it with macros. Ran investigations into annuity payments and unit fund values, and helped value unit-linked products.</p>
+          </li>
+          <li>
+            <h3><time datetime="2019-08">2019</time>, data analyst, IBM student start-up programme</h3>
+            <p>Part of a small university start-up team, analysing data in R and Watson Studio.</p>
+          </li>
+          <li>
+            <h3><time datetime="2020-07">2020</time>, summer analyst, Goldman Sachs</h3>
+            <p>Built a back-testing tool that compared new pricing models with the old ones across historical data.</p>
+          </li>
+          <li>
+            <h3><time datetime="2021-06">2021</time>, analyst</h3>
+            <p>gRPC tooling, pricing-flow monitoring and the zero-downtime load balancer.</p>
+          </li>
+          <li>
+            <h3><time datetime="2024-01">2024</time>, associate</h3>
+            <p>The pricing cache, the start-up work, the tracing migration, worker pools and the shared platform.</p>
+          </li>
+          <li>
+            <h3><time datetime="2026-01">2026</time>, vice president</h3>
+            <p>Agent platforms, grounded AI for traders and Bloomberg chat bots.</p>
+          </li>
+        </ol>
+        <p class="aside">
+          Finalist, Black Developer of the Year, Black Tech Awards. I also mentor students moving into
+          finance and technology.
+        </p>
+      </section>
+
+      <section id="contact" class="contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">Contact</h2>
+        <p>For roles, collaborations or a chat about any track, message me on LinkedIn.</p>
+        <ul class="links">
+          <li><a href="https://www.linkedin.com/in/joshua-mwangi-32ab9879/" rel="me">LinkedIn</a></li>
+          <li><a href="https://github.com/JoshuaMaina" rel="me">GitHub</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
 
   <footer class="site-footer">
-    <p>Joshua Mwangi Maina, London</p>
+    <p>Joshua Mwangi Maina, London. Pressed in plain HTML and CSS.</p>
   </footer>
 </body>
 </html>
