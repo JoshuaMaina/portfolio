@@ -113,7 +113,8 @@ page = f"""<!doctype html>
   <main id="main">
     <section class="page intro" aria-labelledby="intro-title">
       <div class="sheet">
-        <h1 id="intro-title">Joshua Mwangi Maina builds systems where a wrong number costs money.</h1>
+        <p class="award">Finalist, Black Developer of the Year, Black Tech Awards</p>
+        <h1 id="intro-title">Josh builds systems where a wrong number costs money.</h1>
         <p class="lede">
           At Goldman Sachs that has meant pricing infrastructure. I built a clustered cache that made
           cross-asset pricing more than ten times faster{cite("cache", 1)},
@@ -135,10 +136,9 @@ page = f"""<!doctype html>
 
     <section id="contact" class="page contact" tabindex="-1" aria-labelledby="contact-title">
       <div class="sheet">
-        <h2 id="contact-title">Next page</h2>
-        <p>Finalist, Black Developer of the Year, Black Tech Awards. I also mentor students moving into
-          finance and technology. For roles, collaborations or a chat about any page here, message me on
-          LinkedIn.</p>
+        <h2 id="contact-title">Contact</h2>
+        <p>For roles, collaborations or a chat about any page here, message me on LinkedIn. I also mentor
+          students moving into finance and technology.</p>
         <ul class="links">
           <li><a href="https://www.linkedin.com/in/joshua-mwangi-32ab9879/" rel="me">LinkedIn</a></li>
           <li><a href="https://github.com/JoshuaMaina" rel="me">GitHub</a></li>
