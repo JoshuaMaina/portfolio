@@ -96,6 +96,8 @@ page = f"""<!doctype html>
 {fill_rules}
   </style>
   <script type="module" src="/timeline.js"></script>
+  <!-- Vercel Web Analytics: same-origin script, allowed by the CSP. No npm package needed for plain HTML. -->
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>

@@ -25,6 +25,8 @@ the claim.
   `IntersectionObserver` fallback for browsers without `scroll-target-group`.
 - `build/`: the sources (`pages.py`, `styles.css`, `fonts.css`) and the generator. They aren't deployed.
 - `fonts/`: self-hosted Newsreader and Schibsted Grotesk, under the SIL Open Font License.
+- Vercel Web Analytics: a deferred `/_vercel/insights/script.js` tag in the page head. Plain HTML doesn't need the
+  `@vercel/analytics` npm package, and the script is same-origin, so the CSP allows it.
 - `vercel.json`: security headers. The CSP allows only same-origin scripts. Fonts get long-lived caching.
 
 ## Built with Chrome's Modern Web Guidance
