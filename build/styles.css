@@ -3,20 +3,12 @@
   color-scheme: light dark;
 
   --paper: light-dark(#F1F3F2, #121920);
+  --sheet: light-dark(#FBFCFB, #18212B);
   --ink: light-dark(#18212B, #E4E8EA);
   --muted: light-dark(#59636E, #9AA5AF);
   --rule: light-dark(#CBD2D6, #2B3640);
   --cobalt: light-dark(#2747D0, #8EA4FF);
   --mark: light-dark(#FFE48A, #4A3F12);
-
-  /* The physical objects keep their colours in both schemes */
-  --sleeve: #2747D0;
-  --sleeve-ink: #F1F3F2;
-  --vinyl: #000;
-  --groove: #1C1F24;
-  --label: #FFE48A;
-  --label-ink: #18212B;
-  --arm: light-dark(#8B949C, #B5BDC4);
 
   --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Schibsted Grotesk", system-ui, sans-serif;
@@ -25,13 +17,12 @@
   --step--1: calc(var(--step-0) / 1.25);
   --step-1: calc(var(--step-0) * 1.25);
   --step-2: calc(var(--step-0) * 1.5625);
-  --step-4: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  --step-4: clamp(2.25rem, 1.6rem + 2.6vw, 3.75rem);
+  --step-5: clamp(3rem, 2rem + 5vw, 6rem);
 
   --measure: 62ch;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
-
-  /* 33⅓ rpm */
-  --rev: 1.8s;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --bar: 4.5rem; /* height of the timeline bar */
 }
 
 /* Base -------------------------------------------------------------- */
@@ -40,6 +31,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scroll-snap-type: y proximity;
+  scroll-padding-block-end: var(--bar);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -48,6 +41,7 @@ html {
 
 body {
   margin: 0;
+  padding-block-end: var(--bar);
   background: var(--paper);
   color: var(--ink);
   font-family: var(--serif);
@@ -59,7 +53,7 @@ body {
   overflow-wrap: break-word;
 }
 
-h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
 p { margin: 0; text-wrap: pretty; }
 ol, ul { margin: 0; padding: 0; list-style: none; }
 
@@ -75,12 +69,22 @@ a {
   outline-offset: 3px;
   border-radius: 2px;
 }
+[tabindex="-1"]:focus { outline: none; }
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 .skip {
   position: absolute;
   inset-inline-start: var(--gutter);
   inset-block-start: -4rem;
-  z-index: 10;
+  z-index: 20;
   padding: 0.5rem 0.75rem;
   background: var(--ink);
   color: var(--paper);
@@ -88,7 +92,7 @@ a {
   &:focus { inset-block-start: 1rem; }
 }
 
-/* Page frame -------------------------------------------------------- */
+/* Header ------------------------------------------------------------ */
 .site-header {
   display: flex;
   flex-wrap: wrap;
@@ -105,221 +109,51 @@ a {
   & nav a:hover { color: var(--ink); text-decoration: underline; }
 }
 
-.layout {
+/* Pages ------------------------------------------------------------- */
+/* Each page fills the screen above the timeline bar */
+.page {
+  min-block-size: calc(100svh - var(--bar));
   display: grid;
-  gap: 2rem var(--gutter);
-  padding-inline: var(--gutter);
+  align-content: center;
+  padding: clamp(1.5rem, 5vh, 3rem) var(--gutter);
+  scroll-snap-align: start;
 }
 
-@media (width >= 64em) {
-  .layout {
-    grid-template-columns: minmax(22rem, 5fr) 7fr;
-    align-items: start;
-  }
-  .deck-col {
-    position: sticky;
-    inset-block-start: 0;
-    min-block-size: 100dvh;
-    display: grid;
-    align-content: center;
-  }
-}
-
-main > section { padding-block: clamp(2.5rem, 7vw, 5rem); }
-main > section + section { border-block-start: 1px solid var(--rule); }
-
-h2 {
-  font-family: var(--sans);
-  font-size: var(--step-2);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  margin-block-end: 2rem;
-}
-
-/* The deck: sleeve, record, tonearm --------------------------------- */
-.deck {
+.sheet {
   position: relative;
-  inline-size: min(100%, 36rem);
-  aspect-ratio: 1.55;
+  inline-size: min(100%, 52rem);
   margin-inline: auto;
-  overflow-x: clip;
-  overflow-clip-margin: 1rem;
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1.5rem 3rem -2rem rgb(0 0 0 / 0.35);
 }
 
-.sleeve {
+/* Folio: this really is page n of a sequence */
+.folio {
   position: absolute;
-  inset-block-start: 4%;
-  inset-inline-start: 0;
-  z-index: 2;
-  inline-size: 54%;
-  aspect-ratio: 1;
-  display: grid;
-  align-content: space-between;
-  padding: 7%;
-  background:
-    radial-gradient(circle at 78% 22%, rgb(255 255 255 / 0.14), transparent 45%),
-    var(--sleeve);
-  color: var(--sleeve-ink);
-  font-family: var(--sans);
-  box-shadow: 0 1.25rem 2.5rem -1.25rem rgb(0 0 0 / 0.45);
-  border-radius: 3px;
-  container-type: inline-size;
-
-  & .sleeve-title {
-    font-size: 13cqi;
-    font-weight: 700;
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-  }
-  & .sleeve-sub {
-    font-size: 5.5cqi;
-    font-weight: 500;
-    line-height: 1.2;
-    opacity: 0.85;
-  }
-}
-
-.record-slot {
-  position: absolute;
-  inset-block-start: 5%;
-  inset-inline-start: 30%;
-  z-index: 1;
-  inline-size: 60%;
-  aspect-ratio: 1;
-}
-
-.record {
-  inline-size: 100%;
-  block-size: 100%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 0 32%, rgb(255 255 255 / 0.06) 32.5% 33%, transparent 33.5%),
-    repeating-radial-gradient(circle, var(--vinyl) 0 2px, var(--groove) 2px 3px);
-  box-shadow:
-    0 0 0 1px light-dark(transparent, rgb(255 255 255 / 0.14)),
-    0 1rem 2rem -1rem rgb(0 0 0 / 0.6);
-  display: grid;
-  place-items: center;
-  container-type: inline-size;
-  animation: spin var(--rev) linear infinite paused;
-}
-
-/* Light catching the grooves stays still while the record turns */
-.record-slot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(from 20deg,
-    transparent 0 10%, rgb(255 255 255 / 0.12) 14%, transparent 20% 52%,
-    rgb(255 255 255 / 0.09) 57%, transparent 63%);
-  pointer-events: none;
-}
-
-.label {
-  inline-size: 34%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--label);
-  color: var(--label-ink);
-  display: grid;
-  place-content: center;
-  text-align: center;
-  font-family: var(--sans);
-  font-size: 4cqi;
-  font-weight: 700;
-  line-height: 1.1;
-  position: relative;
-
-  /* Spindle hole */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 46%;
-    border-radius: 50%;
-    background: var(--paper);
-  }
-  & .label-top, & .label-bottom { position: absolute; inset-inline: 0; }
-  & .label-top { inset-block-start: 18%; }
-  & .label-bottom { inset-block-end: 18%; font-weight: 500; font-size: 3.2cqi; }
-}
-
-.tonearm {
-  position: absolute;
-  inset-block-start: -1%;
-  inset-inline-end: 0;
-  z-index: 3;
-  inline-size: 17%;
-  transform-origin: 72% 9%;
-  rotate: -14deg;
-  transition: rotate 700ms cubic-bezier(0.3, 1.4, 0.5, 1);
-
-  & path, & line { stroke: var(--arm); }
-  & circle { fill: var(--arm); }
-  & rect { fill: var(--ink); }
-}
-
-.now-playing {
-  margin-block-start: 1.25rem;
+  inset-block-end: 1rem;
+  inset-inline-end: 1.25rem;
   font-family: var(--sans);
   font-size: var(--step--1);
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--muted);
-  text-align: center;
-  min-block-size: 3lh;
-
-  & strong { color: var(--ink); font-weight: 500; }
-  & .np { display: none; }
-  & .stop { display: none; margin-inline-start: 0.5rem; }
 }
 
-/* Playing state: any track targeted ---------------------------------- */
-body:has(.track:target) {
-  & .record { animation-play-state: running; }
-  & .tonearm { rotate: 16deg; }
-  & .np-idle { display: none; }
-  & .stop { display: inline; }
-}
-
-@keyframes spin { to { rotate: 1turn; } }
-
-/* One orchestrated moment: the record slides out of its sleeve */
-@media (prefers-reduced-motion: no-preference) {
-  .record-slot { animation: slide-out 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) 200ms backwards; }
-  @keyframes slide-out { from { translate: -42% 0; } }
-}
-
-/* Without motion the record never turns, but the arm still drops */
-@media (prefers-reduced-motion: reduce) {
-  .record { animation: none; }
-  .tonearm { transition: none; }
-}
-
-/* Liner notes (intro) ------------------------------------------------ */
-.statement {
+/* Intro page */
+.intro {
   & h1 {
     font-family: var(--sans);
     font-size: var(--step-4);
     font-weight: 500;
     line-height: 1.05;
     letter-spacing: -0.025em;
-    max-width: 16ch;
+    max-inline-size: 16ch;
     margin-block-end: 2rem;
   }
-  & .lede { font-size: var(--step-1); line-height: 1.5; max-width: var(--measure); }
-  & .sub { margin-block-start: 1.5rem; max-width: 56ch; color: var(--muted); }
-  & .play-cta {
-    display: inline-block;
-    margin-block-start: 1.75rem;
-    padding: 0.6rem 1.1rem;
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--paper);
-    font-family: var(--sans);
-    font-size: var(--step--1);
-    font-weight: 500;
-    text-decoration: none;
-    &:hover { background: var(--cobalt); color: var(--sleeve-ink); }
-  }
+  & .lede { font-size: var(--step-1); line-height: 1.5; max-inline-size: var(--measure); }
+  & .sub { margin-block-start: 1.5rem; max-inline-size: 56ch; color: var(--muted); }
 }
 
 .cite {
@@ -336,120 +170,80 @@ body:has(.track:target) {
   &:hover, &:focus-visible { background-color: var(--mark); color: var(--ink); }
 }
 
-/* Tracklist ---------------------------------------------------------- */
-.side {
-  font-family: var(--sans);
-  font-size: var(--step--1);
-  font-weight: 500;
-  color: var(--muted);
-  margin-block: 3rem 1rem;
-  &:first-of-type { margin-block-start: 0; }
-}
-
-.track {
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
-  column-gap: 0.75rem;
-  padding-block: 1.25rem;
-  border-block-start: 1px solid var(--rule);
-  scroll-margin-block-start: 1.5rem;
-  max-inline-size: 48rem;
-
-  & .no {
+/* A work page */
+.entry {
+  & .year {
+    display: block;
     font-family: var(--sans);
+    font-size: var(--step-5);
     font-weight: 700;
-    font-size: var(--step--1);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
     font-variant-numeric: lining-nums tabular-nums;
     color: var(--cobalt);
-    padding-block-start: 0.2em;
+    margin-block-end: 1.5rem;
   }
-  & h4 {
+  & .where {
     font-family: var(--sans);
-    font-size: var(--step-0);
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-block-end: 0.35rem;
+  }
+  & h3 {
+    font-family: var(--sans);
+    font-size: var(--step-2);
     font-weight: 500;
-    & a { color: var(--ink); text-decoration: none; }
-    & a:hover { text-decoration: underline; }
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-block-end: 1rem;
   }
   & .metric {
+    display: inline-block;
+    margin-block-end: 1.25rem;
+    padding: 0.2em 0.6em;
+    background: var(--mark);
+    color: var(--ink);
     font-family: var(--sans);
     font-size: var(--step--1);
+    font-weight: 500;
     font-variant-numeric: lining-nums tabular-nums;
-    color: var(--muted);
-    padding-block-start: 0.2em;
-    text-align: end;
+    border-radius: 3px;
   }
-  & .notes { grid-column: 2 / -1; }
-  & .notes p { margin-block-start: 0.5rem; max-inline-size: var(--measure); }
+  & .body { max-inline-size: var(--measure); }
   & .stack {
+    margin-block-start: 1.25rem;
+    padding-inline-end: 4rem; /* clear the folio */
     font-family: var(--sans);
     font-size: var(--step--1);
     color: var(--muted);
   }
 
-  &:target {
-    background: linear-gradient(to right, var(--mark), var(--paper) 90%);
-    outline: 2px solid transparent;
-  }
+  /* Arriving from a citation */
+  &:target .sheet { outline: 2px solid var(--cobalt); outline-offset: 4px; }
 }
 
-/* Equaliser beside the playing track */
-.eq {
-  display: none;
-  gap: 2px;
-  align-items: end;
-  block-size: 0.9em;
-  margin-inline-start: 0.5rem;
-  vertical-align: baseline;
-  & i { inline-size: 3px; block-size: 100%; background: var(--cobalt); transform-origin: bottom; }
-  & i:nth-child(2) { scale: 1 0.55; }
-  & i:nth-child(3) { scale: 1 0.8; }
+/* Later pages in a year show a smaller year so the big one marks the start */
+.year-group .page + .page .year {
+  font-size: var(--step-1);
+  letter-spacing: 0;
+  margin-block-end: 1rem;
 }
-.track:target .eq { display: inline-flex; }
 
+/* Pages land as you scroll to them (decorative, so no fallback) */
 @media (prefers-reduced-motion: no-preference) {
-  .track:target .eq i { animation: bounce 900ms ease-in-out infinite alternate; }
-  .track:target .eq i:nth-child(2) { animation-delay: -300ms; }
-  .track:target .eq i:nth-child(3) { animation-delay: -600ms; }
-  @keyframes bounce { from { scale: 1 0.25; } to { scale: 1 1; } }
-}
-
-.hint {
-  margin-block-start: 1rem;
-  font-family: var(--sans);
-  font-size: var(--step--1);
-  color: var(--muted);
-}
-
-/* Credits (career path) ---------------------------------------------- */
-.steps {
-  max-width: var(--measure);
-  border-inline-start: 2px solid var(--rule);
-
-  & li {
-    position: relative;
-    padding-block-end: 1.75rem;
-    padding-inline-start: 1.75rem;
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset-inline-start: -7px;
-      inset-block-start: 0.55em;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--paper);
-      border: 2px solid var(--cobalt);
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .page .sheet {
+      animation: land linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
     }
-    &:last-child { padding-block-end: 0; }
-    &:last-child::before { background: var(--cobalt); }
+    @keyframes land {
+      from { translate: 0 4rem; scale: 0.94; rotate: -1.2deg; opacity: 0.35; }
+    }
   }
-  & h3 { font-family: var(--sans); font-size: var(--step-0); font-weight: 500; margin-block-end: 0.25rem; }
-  & p { color: var(--muted); }
 }
 
-.aside { margin-block-start: 2.25rem; max-width: var(--measure); font-style: italic; }
-
+/* Closing pages */
 .contact .links {
   display: flex;
   flex-wrap: wrap;
@@ -459,20 +253,128 @@ body:has(.track:target) {
   font-size: var(--step-1);
 }
 
+.page h2 {
+  font-family: var(--sans);
+  font-size: var(--step-2);
+  font-weight: 500;
+  margin-block-end: 1rem;
+}
+
 .site-footer {
   padding: 2rem var(--gutter) 3rem;
-  border-block-start: 1px solid var(--rule);
   font-family: var(--sans);
   font-size: var(--step--1);
   color: var(--muted);
+  text-align: center;
+}
+
+/* Timeline bar ------------------------------------------------------ */
+.timeline {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 10;
+  block-size: var(--bar);
+  padding-inline: calc(var(--gutter) + 1.25rem);
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-block-start: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-variant-numeric: lining-nums tabular-nums;
+
+  /* Scrollspy: the browser tracks which year is on screen */
+  scroll-target-group: auto;
+
+  & .track {
+    position: relative;
+    block-size: 100%;
+    max-inline-size: 60rem;
+    margin-inline: auto;
+  }
+
+  /* The axis, and the fill that grows to the current year */
+  & .axis, & .fill {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 1.6rem;
+    block-size: 2px;
+    border-radius: 1px;
+  }
+  & .axis { inset-inline-end: 0; background: var(--rule); }
+  & .fill { inline-size: 0; background: var(--cobalt); }
+
+  & li {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: calc(var(--t) * 100%);
+    translate: -50% 0;
+  }
+
+  & a {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    padding: 1.15rem 0.4rem 0.5rem;
+    color: var(--muted);
+    text-decoration: none;
+
+    &::before {
+      content: "";
+      inline-size: 0.8rem;
+      block-size: 0.8rem;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 2px solid var(--muted);
+    }
+    &:hover { color: var(--ink); }
+  }
+
+  /* Years already passed */
+  & li:has(~ li a:is(:target-current, .target-current)) a::before {
+    background: var(--cobalt);
+    border-color: var(--cobalt);
+  }
+
+  /* The current year: filled, larger, bold and underlined (not colour alone) */
+  & a:is(:target-current, .target-current) {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: underline 2px var(--cobalt);
+    text-underline-offset: 0.3em;
+    &::before {
+      background: var(--cobalt);
+      border-color: var(--cobalt);
+      scale: 1.35;
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--cobalt) 25%, transparent);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .timeline .fill { transition: inline-size 400ms ease; }
+  .timeline a::before { transition: scale 200ms ease, background-color 200ms ease; }
+}
+
+/* Narrow screens: years are spaced evenly instead of by date */
+.timeline .short { display: none; }
+@media (width < 40em) {
+  .timeline {
+    padding-inline: var(--gutter);
+    & li { inset-inline-start: calc(var(--i) / var(--n) * 100%); }
+    & .short { display: inline; }
+    /* Visually hidden, but still the link's accessible name */
+    & .full { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  }
 }
 
 /* Forced colours ------------------------------------------------------ */
 @media (forced-colors: active) {
-  .sleeve, .record, .label { border: 2px solid CanvasText; }
-  .tonearm path, .tonearm line { stroke: CanvasText; }
-  .tonearm circle, .tonearm rect, .eq i { fill: CanvasText; background: CanvasText; }
-  .track:target { outline-color: Highlight; outline-offset: 4px; }
-  .play-cta { border: 1px solid LinkText; }
-  .steps li::before { border-color: CanvasText; }
+  .sheet { border-color: CanvasText; }
+  .timeline .axis { background: GrayText; }
+  .timeline .fill { background: Highlight; }
+  .timeline a::before { border-color: CanvasText; }
+  .timeline a:is(:target-current, .target-current)::before { background: Highlight; }
+  .entry:target .sheet { outline-color: Highlight; }
+  .entry .metric { border: 1px solid CanvasText; }
 }

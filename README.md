@@ -1,41 +1,42 @@
 # portfolio
 
-Personal site for Joshua Mwangi Maina, pressed as a record. It's a single static page with no JavaScript,
-deployed on Vercel from `main`.
+Personal site for Joshua Mwangi Maina, deployed on Vercel from `main`.
 
 ## The idea
 
-My career is laid out as an album. Side A is pricing and trading infrastructure, and Side B is AI and agents.
-Each project is a track. The opening statement makes claims, and the small numbers beside them are track
-numbers. Press one, or any track title, and the tonearm drops, the record spins at 33⅓ rpm and the track
-lights up. "Lift the needle" stops it.
-
-It's all CSS. Choosing a track sets the URL fragment (`#track-3`), and `body:has(.track:target)` drives the
-turntable.
+The career reads as a book. Each project or milestone is a full-height page, in date order from 2015 to
+today, and each page lands into place as you scroll to it. A timeline bar is fixed to the bottom of the
+screen. It shows which year you're reading, fills up to that year, and lets you jump to any year.
+The opening page makes claims with small numbers beside them, and each number links to the page behind
+the claim.
 
 ## Editing
 
-1. Edit `build/tracks.py` for tracks, `build/styles.css` for styles, or `build/build.py` for the page copy.
+1. Edit `build/pages.py`. Years and pages live in one list in date order. The timeline, page numbers
+   and year sections are all generated from it.
 2. Run `python3 build/build.py` to regenerate `index.html`.
 3. Commit and push. Vercel deploys `main` automatically.
 
 ## Structure
 
 - `index.html`: the generated page, with CSS inlined.
-- `build/`: the sources and the generator, which aren't deployed.
+- `timeline.js`: a small module that mirrors the current year into `aria-current`, plus an
+  `IntersectionObserver` fallback for browsers without `scroll-target-group`.
+- `build/`: the sources (`pages.py`, `styles.css`, `fonts.css`) and the generator. They aren't deployed.
 - `fonts/`: self-hosted Newsreader and Schibsted Grotesk, under the SIL Open Font License.
-- `favicon.svg`: adapts to light and dark mode.
-- `vercel.json`: security headers, with no scripts allowed, and long-lived caching for fonts.
+- `vercel.json`: security headers. The CSP allows only same-origin scripts. Fonts get long-lived caching.
 
 ## Built with Chrome's Modern Web Guidance
 
-- **Motion is opt-in.** The record only spins after a visitor picks a track, and there's a visible control to
-  stop it. The slide-out entrance and the spin only run under `prefers-reduced-motion: no-preference`. With
-  reduced motion, the tonearm still moves but nothing spins.
-- Animations use only `rotate` and `translate`, as individual transform properties, so they stay on the
-  compositor.
+- **Timeline scrollspy** (`scrollspy` guide): `scroll-target-group: auto` with `:target-current`. Screen
+  readers get the current year through `aria-current`, and the active year is shown by size, weight and an
+  underline, not colour alone. Browsers without support use the `IntersectionObserver` fallback.
+- **Pages landing** (`scroll-entry-exit-effects`): a scroll-driven `view()` animation using individual
+  transform properties, wrapped in `prefers-reduced-motion: no-preference` and
+  `@supports ((animation-timeline: view()) and (animation-range: entry))`. It's decorative, so there's no
+  fallback.
+- `scroll-snap-type: y proximity`, so pages settle without trapping long content.
 - `light-dark()` colour tokens with `color-scheme`, plus Forced Colors fallbacks.
-- rem-based fluid type with `clamp()`, `<meta name="text-scale">` and container query units on the sleeve
-  and label.
-- `font-size-adjust: from-font`, `text-wrap: balance` and `pretty`, logical properties and native nesting.
-- Inlined critical CSS, preloaded self-hosted fonts and no third-party requests.
+- rem-based fluid type with `clamp()`, `<meta name="text-scale">` and `font-size-adjust: from-font`.
+- Logical properties, native nesting, em-based media queries, and inlined critical CSS with preloaded
+  self-hosted fonts.
